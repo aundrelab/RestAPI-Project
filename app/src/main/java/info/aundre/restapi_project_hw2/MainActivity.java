@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public int validate(String username, String password) {
+    public static int validate(String username, String password) {
         // Hard-code User's and their values
         List<User> users = new ArrayList<>();
         users.add(new User("Bret", "bretrock", 1));
@@ -69,9 +69,6 @@ public class MainActivity extends AppCompatActivity {
         users.add(new User("Maxime_Nienow", "niemax", 8));
         users.add(new User("Delphine", "dolphin", 9));
         users.add(new User("Moriah.Stanton", "mstanton", 10));
-
-        EditText password1 = findViewById(R.id.password);
-        EditText username1 = findViewById(R.id.username);
 
         // Iterate through list and compare and validate credentials
         for(int i = 0; i < users.size(); i++) {
