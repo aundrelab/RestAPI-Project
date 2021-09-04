@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,16 +34,29 @@ public class MainActivity extends AppCompatActivity {
                 String username = username1.getText().toString();
                 String password = password1.getText().toString();
 
-                if(validate(username, password)) {
+                int res = validate(username, password);
+                if(res != -1) {
                     Intent i = new Intent(MainActivity.this, LandingPageActivity.class);
+                    Bundle bund = new Bundle();
+                    bund.putInt("userId", res);
+                    bund.putString("username", username);
+                    i.putExtras(bund);
                     startActivity(i);
+                    finish();
+                } else {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Wrong username or password! Try again space cowboy!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
             }
         });
 
     }
 
-    public boolean validate(String username, String password) {
+    public int validate(String username, String password) {
         // Hard-code User's and their values
         List<User> users = new ArrayList<>();
         users.add(new User("Bret", "bretrock", 1));
@@ -54,13 +70,16 @@ public class MainActivity extends AppCompatActivity {
         users.add(new User("Delphine", "dolphin", 9));
         users.add(new User("Moriah.Stanton", "mstanton", 10));
 
+        EditText password1 = findViewById(R.id.password);
+        EditText username1 = findViewById(R.id.username);
+
         // Iterate through list and compare and validate credentials
         for(int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equals(username) && users.get(i).getPassword().equals(password)) {
-                return true;
+                return users.get(i).getId();
             }
         }
-        return false;
+        return -1;
     }
 
 }
